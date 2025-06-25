@@ -49,8 +49,8 @@ const navigate = useNavigate();
   const handleSubmit = async () => {
     setSubmitted(true);
       setTimeout(() => {
-    navigate('/');
-  }, 2000); // waits 2 seconds before redirecting
+    navigate('/home');
+  }, 5000); // waits 2 seconds before redirecting
   
   };
 

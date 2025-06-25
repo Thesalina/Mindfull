@@ -12,8 +12,8 @@ const ResourceNav = () => {
   useEffect(() => {
     const fetchResources = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/resources");
-        const data = await res.json();
+        const resource = await fetch("http://localhost:5000/api/resources");
+        const data = await resource.json();
         setResources(data);
       } catch (err) {
         console.error("Failed to fetch resources:", err);
@@ -23,11 +23,13 @@ const ResourceNav = () => {
     fetchResources();
   }, []);
 
-  const groupedResources = {
-    articles: resources.filter(r => r.type === 'article' || r.type === 'infographic'),
-    media: resources.filter(r => r.type === 'video' || r.type === 'podcast'),
-    myths: resources.filter(r => r.category?.toLowerCase().includes('myth') || r.title.toLowerCase().includes('myth')),
-  };
+const groupedResources = {
+  articles: resources.filter(r => r.type === 'article' || r.type === 'infographic'),
+  
+  media: resources.filter(r => r.type === 'video' || r.type === 'podcast'),
+  myths: resources.filter(r => r.type === 'myth')   
+};
+
 
   const filteredResources = groupedResources[activeTab].filter(resource =>
     resource.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -45,7 +47,7 @@ const ResourceNav = () => {
   };
 
   return (
-    <div className="min-h-screen bg-emerald-50">
+    <div className="min-h-screen  bg-white dark:bg-slate-800 text-black dark:text-white rounded-xl shadow p-6 transition-colors duration-300">
       <main className="max-w-6xl mx-auto px-4 py-8">
         <h2 className="text-3xl font-bold text-emerald-600 mb-2">Mental Health Resources</h2>
         <p className="text-emerald-600 mb-6">Explore articles, videos, and myth-busting content to support your mental health journey.</p>
@@ -63,7 +65,7 @@ const ResourceNav = () => {
           />
         </div>
 
-        <div className="flex space-x-2 border-b border-emerald-200 mb-6">
+        <div className="flex space-x-2 border-b bg-mint-light border-emerald-200 mb-6">
           {['articles', 'media', 'myths'].map(tab => (
             <button
               key={tab}
@@ -84,7 +86,7 @@ const ResourceNav = () => {
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {filteredResources.map(resource => (
-            <div key={resource._id} className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow">
+            <div key={resource._id} className="bg-mint-light rounded-lg shadow-md hover:shadow-lg transition-shadow">
               <div className="p-6">
                 <div className="flex items-center mb-2">
                   <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">

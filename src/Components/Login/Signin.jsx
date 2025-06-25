@@ -1,20 +1,37 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { FiEye, FiEyeOff } from 'react-icons/fi';
 import {
   createUserWithEmailAndPassword,
   updateProfile,
   GoogleAuthProvider,
   signInWithPopup
 } from 'firebase/auth';
-import { auth } from '../Firebase'; // ✅ Update path if needed
+import { auth } from '../Firebase'; 
+import axios from 'axios';
 
 export default function Signin() {
-  const [fullname, setFullname] = useState('');
+  const [name, setFullname] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 const navigate = useNavigate();
   // Email/Password Signup
-  
+ const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post('http://localhost:5000/api/auth/signup', {
+        name,
+        email,
+        password,
+      });
+      alert("Signup successful");
+      navigate('/login');
+    } catch (err) {
+      alert(err.response?.data?.error || "Signup failed");
+    }
+  };
+
 
   // Google Signup
   const handleGoogleSignup = async () => {
@@ -24,7 +41,7 @@ const navigate = useNavigate();
       const user = result.user;
       console.log("Google user signed in:", user);
       alert(`Welcome, ${user.displayName || "Google User"}!`);
-      navigate('/'); // Redirect to home page after successful signup
+      navigate('/home'); // Redirect to home page after successful signup
     } catch (error) {
       console.error("Google Sign-in Error:", error.message);
       alert(error.message);
@@ -39,18 +56,18 @@ const navigate = useNavigate();
           <p className="text-emerald-600 mt-2">Create your account</p>
         </div>
 
-        <form  className="space-y-6" noValidate>
+        <form  className="space-y-6" noValidate onSubmit={handleSubmit}>
           <div>
-            <label htmlFor="fullname" className="block text-sm font-medium text-emerald-600 mb-1">
+            <label htmlFor="name" className="block text-sm font-medium text-emerald-600 mb-1">
               Full Name
             </label>
             <input
               type="text"
-              id="fullname"
+              id="name"
               required
               placeholder="abc xyz"
-              value={fullname}
-              onChange={(e) => setFullname(e.target.value)}
+              value={name}
+              onChange={(e) => setFullname(e.target.value)} 
               className="w-full px-4 py-3 border border-slate-300 bg-white rounded-2xl text-emerald-600 focus:outline-none focus:ring-2 focus:ring-mint focus:border-mint transition"
             />
           </div>
@@ -74,15 +91,27 @@ const navigate = useNavigate();
             <label htmlFor="password" className="block text-sm font-medium text-emerald-600 mb-1">
               Password
             </label>
-            <input
-              type="password"
-              id="password"
-              required
-              placeholder="Enter your password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 border border-slate-300 bg-white rounded-2xl text-emerald-600 focus:outline-none focus:ring-2 focus:ring-mint focus:border-mint transition"
-            />
+          <div className="relative">
+  <input
+    type={showPassword ? 'text' : 'password'}
+    id="password"
+    required
+    placeholder="Enter your password"
+    value={password}
+    onChange={(e) => setPassword(e.target.value)}
+    className="w-full px-4 py-3 pr-12 border bg-white border-slate-300 rounded-2xl text-emerald-600 focus:outline-none focus:ring-2 focus:ring-mint focus:border-mint transition"
+    autoComplete="current-password"
+  />
+  <button
+    type="button"
+    onClick={() => setShowPassword(!showPassword)}
+    className="absolute right-4 top-3 text-emerald-600"
+    aria-label="Toggle password visibility"
+  >
+    {showPassword ? <FiEyeOff size={20} /> : <FiEye size={20} />}
+  </button>
+</div>
+
           </div>
 
           <div className="flex justify-between items-center text-sm text-emerald-600">
@@ -97,6 +126,7 @@ const navigate = useNavigate();
 
           <button
             type="submit"
+            onClick={handleSubmit}
             className="w-full bg-white text-emerald-600 font-semibold py-3 rounded-2xl hover:bg-mint transition duration-200 shadow-md hover:shadow-lg"
           >
             Sign Up

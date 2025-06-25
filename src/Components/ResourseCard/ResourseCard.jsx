@@ -24,10 +24,10 @@ export default function ResourceCard({
     podcast: "bg-green-100 text-green-800",
     audio: "bg-yellow-100 text-yellow-800"
   };
-  //const navigate = useNavigate();
+  
 
   return (
-    <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+    <div className="bg-mint-light rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow">
       <div className="relative h-48 overflow-hidden">
         <img
           src={image}
@@ -39,13 +39,13 @@ export default function ResourceCard({
         />
         <div className="absolute bottom-2 left-2">
           <span
-            className={`text-xs px-2 py-1 rounded-full ${typeColors[type] || "bg-gray-100 text-gray-800"}`}
+            className={`text-xs px-2 py-1 rounded-full ${typeColors[type] || "bg-mint-light text-gray-800"}`}
           >
             {typeIcons[type] || "📄"} {type}
           </span>
         </div>
       </div>
-      <div className="p-5">
+      <div className="p-5  ">
         <h3 className="text-xl font-semibold mb-2 line-clamp-2">{title}</h3>
         <p className="text-gray-600 mb-4 line-clamp-3">{description}</p>
         <div className="flex justify-between items-center">

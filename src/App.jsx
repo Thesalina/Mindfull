@@ -42,6 +42,11 @@ function App() {
       ) : (
         <button onClick={handleLogin}>Sign in with Google</button>
       )}
+
+      const root = window.document.documentElement; 
+
+      root.classList.add('dark'); // applies to dark mode
+
     </div>
   );
 }

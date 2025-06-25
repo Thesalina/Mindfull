@@ -1,7 +1,7 @@
   
 export default function Footer() {
   return (
-    <footer className="text-sm text-center text-purple-800 py-10  bg-mint-light">
+    <footer className="text-sm text-center text-purple-800 py-1 px-2 bg-mint-light">
       <div className=" bg-mint-light">
         <a href="#">Privacy Policy</a>
         <br/>

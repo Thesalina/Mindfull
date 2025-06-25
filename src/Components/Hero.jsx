@@ -5,10 +5,10 @@ export default function MainPage() {
   const navigate = useNavigate();
 
   return (
-    <section className="min-h-screen bg-white text-emerald-600 font-sans px-4 py-12 flex flex-col items-center">
+    <section className="min-h-screen  text-emerald-600 font-sans px-4 py-12 flex flex-col items-center bg-white dark:bg-slate-800 dark:text-white rounded-xl shadow p-6 transition-colors duration-300">
       {/* Welcome Header */}
       <div className="max-w-3xl text-center space-y-4">
-        <h1 className="text-4xl font-bold text-emerald-600">Welcome back, [Name]! 💚</h1>
+        <h1 className="text-4xl font-bold text-emerald-600">Welcome back, [name]! 💚</h1>
         <p className="text-lg text-emerald-600">
           Take a moment for your mind. Your well-being matters.
         </p>
