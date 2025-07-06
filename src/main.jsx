@@ -14,13 +14,12 @@ import ForgotPassword from './Components/Login/ForgotPassword.jsx';
 import Profile from './Components/NavbarPages/Profile.jsx';
 import TakeMentalHealthCheckIn from './Components/NavbarPages/TakeMentalHealthCheckIN.jsx';
 import ResourceNav from './Components/NavbarPages/ResourceNav.jsx';
-
+import SelfCareToolkit from './Components/NavbarPages/SelfCareToolkit.jsx';
 import { AuthProvider } from './Components/Login/AuthContext.jsx';
 import Articaldetail from './Components/SubComponent/Articaldetail.jsx';
-
 import ProtectedRoute from './Components/Login/ProtectRoute.jsx';
 import { ThemeProvider } from './Components/ThemeContext.jsx';
-//import Splash from './Components/Splash.jsx'; // Import the Splash component
+
 
 // Define router
 const router = createBrowserRouter([
