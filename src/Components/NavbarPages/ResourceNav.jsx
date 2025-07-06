@@ -1,8 +1,7 @@
-
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FiBook, FiPlay, FiAlertTriangle, FiClock, FiSearch } from 'react-icons/fi';
- //import Articaldetail from '../Articaldetail.jsx';
+import { FiBook, FiPlay, FiClock, FiSearch } from 'react-icons/fi';
+
 const ResourceNav = () => {
   const [resources, setResources] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -23,13 +22,10 @@ const ResourceNav = () => {
     fetchResources();
   }, []);
 
-const groupedResources = {
-  articles: resources.filter(r => r.type === 'article' || r.type === 'infographic'),
-  
-  media: resources.filter(r => r.type === 'video' || r.type === 'podcast'),
-  myths: resources.filter(r => r.type === 'myth')   
-};
-
+  const groupedResources = {
+    articles: resources.filter(r => r.type === 'article' || r.type === 'infographic'),
+    media: resources.filter(r => r.type === 'video' || r.type === 'podcast')
+  };
 
   const filteredResources = groupedResources[activeTab].filter(resource =>
     resource.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -47,10 +43,10 @@ const groupedResources = {
   };
 
   return (
-    <div className="min-h-screen  bg-white dark:bg-slate-800 text-black dark:text-white rounded-xl shadow p-6 transition-colors duration-300">
+    <div className="min-h-screen bg-white dark:bg-slate-800 text-black dark:text-white rounded-xl shadow p-6 transition-colors duration-300">
       <main className="max-w-6xl mx-auto px-4 py-8">
         <h2 className="text-3xl font-bold text-emerald-600 mb-2">Mental Health Resources</h2>
-        <p className="text-emerald-600 mb-6">Explore articles, videos, and myth-busting content to support your mental health journey.</p>
+        <p className="text-emerald-600 mb-6">Explore articles, videos, and media to support your mental health journey.</p>
 
         <div className="relative mb-6">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -66,7 +62,7 @@ const groupedResources = {
         </div>
 
         <div className="flex space-x-2 border-b bg-mint-light border-emerald-200 mb-6">
-          {['articles', 'media', 'myths'].map(tab => (
+          {['articles', 'media'].map(tab => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
@@ -78,7 +74,6 @@ const groupedResources = {
             >
               {tab === 'articles' && <FiBook className="inline mr-2" />}
               {tab === 'media' && <FiPlay className="inline mr-2" />}
-              {tab === 'myths' && <FiAlertTriangle className="inline mr-2" />}
               {tab.charAt(0).toUpperCase() + tab.slice(1)}
             </button>
           ))}

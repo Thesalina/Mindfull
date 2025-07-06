@@ -1,20 +1,23 @@
 import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { useAuth } from '../Components/Login/AuthContext.jsx'; // ✅ Ensure this path matches your updated AuthContext file
+import { useAuth } from '../Components/Login/AuthContext.jsx';
 import { useTheme } from '../Components/ThemeContext.jsx';
 
 export default function Navbar() {
-  const { currentUser, logout } = useAuth(); // ✅ Use combined logout and currentUser
+  const { currentUser, logout, loading } = useAuth(); // ✅ Include `loading` state
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
 
   const handleLogout = async () => {
     try {
-      await logout(); // ✅ Unified logout: handles Firebase + backend
+      await logout();
       navigate('/login');
     } catch (error) {
       console.error('Logout failed:', error);
     }
   };
+
+  // ✅ If still loading user, don't render anything
+  if (loading) return null;
 
   return (
     <nav className="bg-mint-light shadow-sm sticky top-0 z-50">
@@ -28,24 +31,25 @@ export default function Navbar() {
           />
           <span className="text-2xl font-extrabold text-emerald-600">Mindfull</span>
         </Link>
-       
-        {/* Navigation Links */}
-        <div className="hidden md:flex space-x-6 text-gray-700 font-medium">
-          
-          <NavLink to="/home" className={({ isActive }) => isActive ? 'text-emerald-600' : 'hover:text-emerald-500'}>
-            Home
-          </NavLink>
-          <NavLink to="/selfcaretoolkit" className={({ isActive }) => isActive ? 'text-emerald-600' : 'hover:text-emerald-500'}>
-            Self-Care Toolkit
-          </NavLink>
-          <NavLink to="/profile" className={({ isActive }) => isActive ? 'text-emerald-600' : 'hover:text-emerald-500'}>
-            Profile
-          </NavLink>
-          <NavLink to="/resources" className={({ isActive }) => isActive ? 'text-emerald-600' : 'hover:text-emerald-500'}>
-            Resources
-          </NavLink>
-        </div>
-        
+
+        {/* Navigation Links - only show if logged in */}
+        {currentUser && (
+          <div className="hidden md:flex space-x-6 text-gray-700 font-medium">
+            <NavLink to="/home" className={({ isActive }) => isActive ? 'text-emerald-600' : 'hover:text-emerald-500'}>
+              Home
+            </NavLink>
+            <NavLink to="/selfcaretoolkit" className={({ isActive }) => isActive ? 'text-emerald-600' : 'hover:text-emerald-500'}>
+              Self-Care Toolkit
+            </NavLink>
+            <NavLink to="/profile" className={({ isActive }) => isActive ? 'text-emerald-600' : 'hover:text-emerald-500'}>
+              Profile
+            </NavLink>
+            <NavLink to="/resources" className={({ isActive }) => isActive ? 'text-emerald-600' : 'hover:text-emerald-500'}>
+              Resources
+            </NavLink>
+          </div>
+        )}
+
         {/* Theme Toggle */}
         <button onClick={toggleTheme} className="bg-mint dark:bg-mint px-5 py-2 rounded-full">
           {theme === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode'}
@@ -63,7 +67,7 @@ export default function Navbar() {
           ) : (
             <>
               <Link
-                to="/signup"
+                to="/signin"
                 className="bg-mint text-black px-4 py-2 rounded-full hover:bg-cyan-500 transition"
               >
                 Sign Up

@@ -4,7 +4,8 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 
-const firebaseConfig = {
+
+const Firebase  = {
 apiKey: "AIzaSyDYN4n4M57DIyV7ObQaWtuezZB3uRfF2AI",
   authDomain: "mindful-1a934.firebaseapp.com",
   projectId: "mindful-1a934",
@@ -14,6 +15,8 @@ apiKey: "AIzaSyDYN4n4M57DIyV7ObQaWtuezZB3uRfF2AI",
   measurementId: "G-G002ZQMJ7T"
 };
 
-const app = initializeApp(firebaseConfig);
+const app = initializeApp(Firebase);
 export const auth = getAuth(app);
 export const provider = new GoogleAuthProvider();
+
+

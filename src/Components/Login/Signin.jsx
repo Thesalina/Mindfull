@@ -21,15 +21,18 @@ const navigate = useNavigate();
     e.preventDefault();
     try {
       await axios.post('http://localhost:5000/api/auth/signup', {
-        name,
-        email,
-        password,
-      });
+  name,
+  email,
+  password,
+});
+
       alert("Signup successful");
       navigate('/login');
     } catch (err) {
-      alert(err.response?.data?.error || "Signup failed");
-    }
+  console.error("Signup Error:", err);
+  alert(err.response?.data?.error || "Signup failed");
+}
+
   };
 
 
@@ -49,14 +52,14 @@ const navigate = useNavigate();
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-5 bg-white font-sans">
-      <div className="bg-mint text-emerald-600 rounded-3xl shadow-xl max-w-md w-full p-5">
+    <div className="min-h-screen flex dark:bg-slate-dark items-center justify-center px-5 bg-gradient-to-br from-mint-light to-white font-sans">
+      <div className=" text-emerald-600 bg-white rounded-3xl shadow-xl max-w-md w-full p-5">
         <div className="mb-8 text-center">
           <h1 className="text-4xl font-poppins font-bold text-emerald-600">Mindfull</h1>
           <p className="text-emerald-600 mt-2">Create your account</p>
         </div>
 
-        <form  className="space-y-6" noValidate onSubmit={handleSubmit}>
+        <form  className="space-y-6 " noValidate onSubmit={handleSubmit}>
           <div>
             <label htmlFor="name" className="block text-sm font-medium text-emerald-600 mb-1">
               Full Name
@@ -116,11 +119,7 @@ const navigate = useNavigate();
 
           <div className="flex justify-between items-center text-sm text-emerald-600">
             <label className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                className="rounded border-mint-light text-mint focus:ring-mint"
-              />
-              <span>Remember me</span>
+             
             </label>
           </div>
 
@@ -157,7 +156,7 @@ const navigate = useNavigate();
 
         <p className="mt-10 text-center text-emerald-600 text-sm">
           Already have an account?{' '}
-          <a href="/login" className="text-emerald-600 font-semibold hover:underline">
+          <a href="login" className="text-emerald-600 font-semibold hover:underline">
             Login Here
           </a>
         </p>

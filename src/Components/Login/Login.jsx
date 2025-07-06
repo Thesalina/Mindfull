@@ -7,16 +7,15 @@ import {
   GoogleAuthProvider
 } from 'firebase/auth';
 import { auth } from '../Firebase';
-import { useAuth } from '../Login/AuthContext'; // ✅ make sure this path is correct
+import { useAuth } from '../Login/AuthContext';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-  const { loginBackendUser } = useAuth(); // ✅ from context
+  const { loginBackendUser } = useAuth();
 
-  // 🔐 Backend Email/Password Login
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
@@ -25,7 +24,6 @@ export default function Login() {
         password,
       });
 
-      // ✅ Save backend user & token in context/localStorage
       const { user, token } = response.data;
       loginBackendUser(user, token);
 
@@ -36,21 +34,25 @@ export default function Login() {
     }
   };
 
-  // 🔐 Firebase Google Login
   const handleGoogleLogin = async () => {
     const provider = new GoogleAuthProvider();
     try {
       await signInWithPopup(auth, provider);
       alert('Google login successful!');
-      navigate('/');
+      navigate('/home');
     } catch (error) {
       alert(error.message);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-6 bg-white text-emerald-600 font-sans">
-      <div className="bg-mint text-emerald-600 rounded-3xl shadow-xl max-w-md w-full p-10">
+    <div
+      className="min-h-screen dark:bg-slate-dark flex items-center justify-center px-6 font-sans"
+      style={{
+        background: 'linear-gradient(135deg, #A7F3D0 0%, #F0FDF4 100%)'
+      }}
+    >
+      <div className="bg-white text-emerald-600 rounded-3xl shadow-xl max-w-md w-full p-10">
         <div className="mb-8 text-center">
           <h1 className="text-4xl font-poppins font-bold text-emerald-600">Mindfull</h1>
           <p className="text-emerald-600 mt-2">Welcome back! Please login to your account.</p>
@@ -98,11 +100,7 @@ export default function Login() {
             </div>
           </div>
 
-          <div className="flex justify-between items-center text-sm">
-            <label className="flex items-center space-x-2">
-              <input type="checkbox" className="rounded border-mint-light text-mint focus:ring-mint" />
-              <span>Remember me</span>
-            </label>
+          <div className="flex justify-center items-center text-sm">
             <a href="/forgotpassword" className="hover:text-emerald-600 font-medium">
               Forgot password?
             </a>
@@ -110,7 +108,7 @@ export default function Login() {
 
           <button
             type="submit"
-            className="w-full bg-white text-emerald-600 font-semibold py-3 rounded-2xl hover:bg-mint transition shadow-md"
+            className="w-full bg-mint text-emerald-600 font-semibold py-3 rounded-2xl hover:bg-emerald-100 transition shadow-md"
           >
             Log In
           </button>
@@ -139,8 +137,11 @@ export default function Login() {
 
         <p className="mt-10 text-center text-sm">
           Don’t have an account?{' '}
-          <a href="/signup" className="text-emerald-600 font-semibold hover:underline">
-            Sign up
+          <a
+            href="/signin"
+            className="text-emerald-600 font-semibold hover:underline"
+          >
+            signin here
           </a>
         </p>
       </div>

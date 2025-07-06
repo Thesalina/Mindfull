@@ -7,24 +7,27 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "type":"module"
-
+    "type": "module"
   },
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "bcryptjs": "^3.0.2",
     "body-parser": "^2.2.0",
     "cors": "^2.8.5",
+    "crypto": "^1.0.1",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "firebase": "^11.9.1",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.16.0",
+    "nodemailer": "^7.0.4",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-firebase-hooks": "^5.1.1",
     "react-icon": "^1.0.0",
     "react-router-dom": "^7.6.2",
-    "recharts": "^2.15.3"
+    "recharts": "^2.15.3",
+    "swiper": "^11.2.8"
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",

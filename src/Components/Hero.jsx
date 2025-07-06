@@ -1,14 +1,40 @@
-import React from 'react';
+// MainPage.jsx
+import React, {  useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-export default function MainPage() {
+// Example: Replace with your actual context or prop provider
+//import { UserContext } from '../context/UserContext';
+
+export default function Hero() {
   const navigate = useNavigate();
+  const { userName } = useContext(UserContext); // replace with your actual user state
+  const [quote, setQuote] = useState({ text: '', author: '' });
+  const [recentEntries, setRecentEntries] = useState([]);
+
+  const quotes = [
+    { text: "You don’t have to control your thoughts. You just have to stop letting them control you.", author: "Dan Millman" },
+    { text: "Mental health is not a destination, but a process.", author: "Noam Shpancer" },
+    { text: "Self-care is how you take your power back.", author: "Lalah Delia" },
+    { text: "This too shall pass.", author: "Persian Proverb" }
+  ];
+
+  useEffect(() => {
+    // Shuffle quotes
+    const random = Math.floor(Math.random() * quotes.length);
+    setQuote(quotes[random]);
+
+    // Get recent journal entries from localStorage
+    const storedEntries = JSON.parse(localStorage.getItem('journalEntries')) || [];
+    setRecentEntries(storedEntries.slice(0, 2));
+  }, []);
 
   return (
-    <section className="min-h-screen  text-emerald-600 font-sans px-4 py-12 flex flex-col items-center bg-white dark:bg-slate-800 dark:text-white rounded-xl shadow p-6 transition-colors duration-300">
+    <section className="min-h-screen text-emerald-600 font-sans px-4 py-12 flex flex-col items-center bg-white dark:bg-slate-800 dark:text-white rounded-xl shadow p-6 transition-colors duration-300">
       {/* Welcome Header */}
       <div className="max-w-3xl text-center space-y-4">
-        <h1 className="text-4xl font-bold text-emerald-600">Welcome back, [name]! 💚</h1>
+        <h1 className="text-4xl font-bold text-emerald-600">
+          Welcome back, {userName || '[name]'}! 💚
+        </h1>
         <p className="text-lg text-emerald-600">
           Take a moment for your mind. Your well-being matters.
         </p>
@@ -23,10 +49,8 @@ export default function MainPage() {
 
       {/* Quote */}
       <div className="bg-emerald-50 border border-emerald-200 p-6 rounded-xl mt-12 max-w-xl text-center shadow-sm">
-        <p className="italic text-emerald-600">
-          “You don’t have to control your thoughts. You just have to stop letting them control you.”
-        </p>
-        <span className="block mt-2 text-sm text-emerald-600">– Dan Millman</span>
+        <p className="italic text-emerald-600">“{quote.text}”</p>
+        <span className="block mt-2 text-sm text-emerald-600">– {quote.author}</span>
       </div>
 
       {/* Encouragement Tips */}
@@ -39,16 +63,22 @@ export default function MainPage() {
         </div>
       </div>
 
-      {/* Optional: Recent Reflections Preview */}
-      <div className="mt-12  w-full max-w-2xl">
+      {/* Recent Reflections */}
+      <div className="mt-12 w-full max-w-2xl">
         <h2 className="text-xl font-semibold mb-4 text-emerald-600">Recent Reflections</h2>
         <div className="space-y-3">
-          <div className="bg-mint-light p-4 rounded-lg shadow-sm text-sm text-emerald-600">
-            📝 “Felt better after journaling this morning.” <span className="text-emerald-600">– 1 day ago</span>
-          </div>
-          <div className="bg-mint-light p-4 rounded-lg shadow-sm text-sm text-emerald-600">
-            📝 “Practiced mindfulness after lunch.” <span className="text-emerald-600">– 3 days ago</span>
-          </div>
+          {recentEntries.length === 0 ? (
+            <p className="text-sm text-emerald-600">No reflections yet. Try writing your first journal entry!</p>
+          ) : (
+            recentEntries.map((entry) => (
+              <div
+                key={entry.id}
+                className="bg-mint-light p-4 rounded-lg shadow-sm text-sm text-emerald-600"
+              >
+                📝 “{entry.content}” <span className="text-emerald-600">– {entry.date}</span>
+              </div>
+            ))
+          )}
         </div>
       </div>
     </section>

@@ -55,7 +55,7 @@ const navigate = useNavigate();
   };
 
   return (
-    <section className="min-h-screen bg-white text-emerald-600 p-6 flex flex-col items-center justify-center">
+    <section className="min-h-screen bg-white text-emerald-600  dark:bg-slate-800  dark:text-white rounded-xl  p-6 flex flex-col items-center justify-center">
       <div className="max-w-xl w-full text-center space-y-6">
         <h1 className="text-3xl font-bold">🧠 Take a Mental Health Check-In</h1>
 

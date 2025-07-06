@@ -8,7 +8,7 @@ import Navbar from './Components/Navbar.jsx';
 import Login from './Components/Login/Login.jsx';
 import Footer from './Components/Footer.jsx';
 import Layout from './Components/Layout.jsx';
-//import Homepage from './Components/Homepage.jsx';
+import homepage from './Components/homepage.jsx';
 import Signin from './Components/Login/Signin.jsx';
 import ForgotPassword from './Components/Login/ForgotPassword.jsx';
 import Profile from './Components/NavbarPages/Profile.jsx';
@@ -16,10 +16,11 @@ import TakeMentalHealthCheckIn from './Components/NavbarPages/TakeMentalHealthCh
 import ResourceNav from './Components/NavbarPages/ResourceNav.jsx';
 import SelfCareToolkit from './Components/NavbarPages/selfcareToolkit.jsx';
 import { AuthProvider } from './Components/Login/AuthContext.jsx';
-import Articaldetail from './Components/Resourcearticles/Articaldetail.jsx';
-//import resource from '../backend/Models/resource.js';
+import Articaldetail from './Components/SubComponent/Articaldetail.jsx';
+
 import ProtectedRoute from './Components/Login/ProtectRoute.jsx';
 import { ThemeProvider } from './Components/ThemeContext.jsx';
+//import Splash from './Components/Splash.jsx'; // Import the Splash component
 
 // Define router
 const router = createBrowserRouter([
@@ -27,11 +28,22 @@ const router = createBrowserRouter([
     path: '/',
     element: <Layout />,
     children: [
+      // ✅ Default route for "/"
+      { 
+        index: true, 
+        element: (
+          <ProtectedRoute>
+            <Hero />
+          </ProtectedRoute>
+        ) 
+      },
+
+      // Public routes
+      { path: '/signin', element: <Signin /> },
       { path: '/login', element: <Login /> },
-      { path: '/signup', element: <Signin /> },
       { path: '/forgotpassword', element: <ForgotPassword /> },
 
-      // 🔐 PROTECTED ROUTES
+      // Protected routes
       {
         path: '/home',
         element: (
@@ -83,6 +95,8 @@ const router = createBrowserRouter([
     ],
   },
 ]);
+
+
 // Render the entire app inside AuthProvider
 createRoot(document.getElementById('root')).render(
   <React.StrictMode>
