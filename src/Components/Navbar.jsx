@@ -1,4 +1,4 @@
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate,useLocation } from 'react-router-dom';
 import { useAuth } from '../Components/Login/AuthContext.jsx';
 import { useTheme } from '../Components/ThemeContext.jsx';
 
@@ -6,6 +6,8 @@ export default function Navbar() {
   const { currentUser, logout, loading } = useAuth(); // ✅ Include `loading` state
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
+const location = useLocation();
+const hideThemeToggle = location.pathname === '/login' || location.pathname === '/signin' || location.pathname === '/forgotpassword' ;
 
   const handleLogout = async () => {
     try {
@@ -15,6 +17,7 @@ export default function Navbar() {
       console.error('Logout failed:', error);
     }
   };
+
 
   // ✅ If still loading user, don't render anything
   if (loading) return null;
@@ -31,6 +34,14 @@ export default function Navbar() {
           />
           <span className="text-2xl font-extrabold text-emerald-600">Mindfull</span>
         </Link>
+
+         {/* Theme Toggle */}
+        {!hideThemeToggle && (
+  <button onClick={toggleTheme} className="bg-mint dark:bg-mint px-5 py-2 rounded-full">
+    {theme === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode'}
+  </button>
+)}
+
 
         {/* Navigation Links - only show if logged in */}
         {currentUser && (
@@ -50,10 +61,7 @@ export default function Navbar() {
           </div>
         )}
 
-        {/* Theme Toggle */}
-        <button onClick={toggleTheme} className="bg-mint dark:bg-mint px-5 py-2 rounded-full">
-          {theme === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode'}
-        </button>
+      
 
         {/* Auth Buttons */}
         <div className="flex space-x-4">

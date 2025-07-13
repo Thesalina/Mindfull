@@ -156,7 +156,7 @@ const navigate = useNavigate();
 
         <p className="mt-10 text-center text-emerald-600 text-sm">
           Already have an account?{' '}
-          <Link to="/login">Login Here </Link>
+          <Link to="/login"><p className='font-semibold'>Login Here </p></Link>
             
           
         </p>
