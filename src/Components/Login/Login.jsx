@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
 import axios from 'axios';
 import {
@@ -55,7 +55,7 @@ export default function Login() {
       <div className="bg-white text-emerald-600 rounded-3xl shadow-xl max-w-md w-full p-10">
         <div className="mb-8 text-center">
           <h1 className="text-4xl font-poppins font-bold text-emerald-600">Mindfull</h1>
-          <p className="text-emerald-600 mt-2">Welcome back! Please login to your account.</p>
+          <p className="text-emerald-600 mt-2">Welcome! Please login to your account.</p>
         </div>
 
         <form className="space-y-6" noValidate onSubmit={handleLogin}>
@@ -137,7 +137,7 @@ export default function Login() {
 
         <p className="mt-10 text-center text-sm">
           Don’t have an account?{' '}
-          <Link to="/signin">Sign up here</Link>
+          <Link to="/signin">Signup here</Link>
         </p>
       </div>
     </div>

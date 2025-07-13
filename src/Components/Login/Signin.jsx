@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import {Link, useNavigate } from 'react-router-dom';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
 import {
   createUserWithEmailAndPassword,
@@ -156,8 +156,8 @@ const navigate = useNavigate();
 
         <p className="mt-10 text-center text-emerald-600 text-sm">
           Already have an account?{' '}
-          <Link to="/login"> Login here</Link>
-            Login Here
+          <Link to="/login">Login Here </Link>
+            
           
         </p>
       </div>
