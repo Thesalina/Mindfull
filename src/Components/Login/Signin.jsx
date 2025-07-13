@@ -134,7 +134,7 @@ const navigate = useNavigate();
 
         <div className="flex items-center my-8 text-emerald-600 text-sm">
           <hr className="flex-grow border-t border-mint" />
-          <span className="mx-4">or continue with</span>
+          <span className="mx-4">or Continue with</span>
           <hr className="flex-grow border-t border-mint" />
         </div>
 
@@ -156,9 +156,9 @@ const navigate = useNavigate();
 
         <p className="mt-10 text-center text-emerald-600 text-sm">
           Already have an account?{' '}
-          <a href="login" className="text-emerald-600 font-semibold hover:underline">
+          <Link to="/login"> Login here</Link>
             Login Here
-          </a>
+          
         </p>
       </div>
     </div>

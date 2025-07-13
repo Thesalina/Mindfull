@@ -5,15 +5,17 @@ import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 
 
-const Firebase  = {
-apiKey: "AIzaSyDYN4n4M57DIyV7ObQaWtuezZB3uRfF2AI",
-  authDomain: "mindful-1a934.firebaseapp.com",
-  projectId: "mindful-1a934",
-  storageBucket: "mindful-1a934.firebasestorage.app",
-  messagingSenderId: "16153642127",
-  appId: "1:16153642127:web:34413542538fa63bf81cfa",
-  measurementId: "G-G002ZQMJ7T"
+
+const Firebase = {
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
 };
+
 
 const app = initializeApp(Firebase);
 export const auth = getAuth(app);

@@ -116,7 +116,7 @@ export default function Login() {
 
         <div className="flex items-center my-8 text-sm">
           <hr className="flex-grow border-t border-mint" />
-          <span className="mx-4">or continue with</span>
+          <span className="mx-4">or Continue with</span>
           <hr className="flex-grow border-t border-mint" />
         </div>
 
@@ -137,12 +137,7 @@ export default function Login() {
 
         <p className="mt-10 text-center text-sm">
           Don’t have an account?{' '}
-          <a
-            href="/signin"
-            className="text-emerald-600 font-semibold hover:underline"
-          >
-            signin here
-          </a>
+          <Link to="/signin">Sign up here</Link>
         </p>
       </div>
     </div>

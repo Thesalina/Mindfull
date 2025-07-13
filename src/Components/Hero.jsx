@@ -33,7 +33,7 @@ export default function Hero() {
       {/* Welcome Header */}
       <div className="max-w-3xl text-center space-y-4">
         <h1 className="text-4xl font-bold text-emerald-600">
-          Welcome back,💚
+          Welcome Preety Soul,💚
         </h1>
         <p className="text-lg text-emerald-600">
           Take a moment for your mind. Your well-being matters.
