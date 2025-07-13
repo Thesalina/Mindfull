@@ -7,7 +7,7 @@ export default function Footer() {
         <br/>
         <a href="#">Terms of Service</a>
         <br/>
-        <a href="https://www.linkedin.com/in/salina-bishwokarma-5bb0a91b9/">Contact Us</a>
+        <a href="">Contact Us</a>
       </div>
       <p>@2025 Mindful. All rights reserved.</p>
     </footer>

@@ -12,7 +12,7 @@ export default function Articledetail() {
   useEffect(() => {
     const fetchArticle = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/resources/${id}`);
+        const response = await fetch(`https://mindfull-backend-gf19.onrender.com${id}`);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }

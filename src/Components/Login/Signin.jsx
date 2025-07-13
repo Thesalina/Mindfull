@@ -20,7 +20,7 @@ const navigate = useNavigate();
  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/api/auth/signup', {
+      await axios.post('https://mindfull-backend-gf19.onrender.com', {
   name,
   email,
   password,
