@@ -13,7 +13,7 @@ export default function ForgotPassword() {
     setError('');
 
     try {
-      const res = await axios.post('https://mindfull-backend-gf19.onrender.com', { email });
+      const res = await axios.post('https://mindfull-backend-gf19.onrender.com/api/auth/forgot-password', { email });
 
       setMessage(res.data.message);
     } catch (err) {

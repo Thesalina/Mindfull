@@ -16,7 +16,7 @@ export default function ResetPassword() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('https://mindfull-backend-gf19.onrender.com', {
+      const res = await axios.post('https://mindfull-backend-gf19.onrender.com/api/auth/reset-password', {
         token,
         password,
       });

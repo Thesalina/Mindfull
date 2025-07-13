@@ -11,7 +11,7 @@ const ResourceNav = () => {
   useEffect(() => {
     const fetchResources = async () => {
       try {
-        const resource = await fetch("https://mindfull-backend-gf19.onrender.com/resources");
+        const resource = await fetch("https://mindfull-backend-gf19.onrender.com/api/resources");
         const data = await resource.json();
         setResources(data);
       } catch (err) {

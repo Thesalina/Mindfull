@@ -19,7 +19,7 @@ export default function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('https://mindfull-backend-gf19.onrender.com', {
+      const response = await axios.post('https://mindfull-backend-gf19.onrender.com/api/auth/login', {
         email,
         password,
       });
