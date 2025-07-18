@@ -35,13 +35,7 @@ const hideThemeToggle = location.pathname === '/login' || location.pathname === 
           <span className="text-2xl font-extrabold text-emerald-600">Mindfull</span>
         </Link>
 
-         {/* Theme Toggle */}
-        {!hideThemeToggle && (
-  <button onClick={toggleTheme} className="bg-mint dark:bg-mint px-5 py-2 rounded-full">
-    {theme === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode'}
-  </button>
-)}
-
+        
 
         {/* Navigation Links - only show if logged in */}
         {currentUser && (
@@ -60,6 +54,13 @@ const hideThemeToggle = location.pathname === '/login' || location.pathname === 
             </NavLink>
           </div>
         )}
+          
+           {/* Theme Toggle */}
+        {!hideThemeToggle && (
+  <button onClick={toggleTheme} className="bg-mint dark:bg-mint px-5 py-2 rounded-full">
+    {theme === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode'}
+  </button>
+)}
 
       
 

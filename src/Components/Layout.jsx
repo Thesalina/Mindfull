@@ -7,8 +7,9 @@ export default function Layout() {
   return (
     <div className="min-h-screen bg-white text-black dark:bg-slate-dark dark:text-white transition-colors duration-300 flex flex-col">
       <Navbar />
+        <main className="flex-grow container mx-auto px-4 py-8">
         <Outlet />
-   
+   </main>
       
       <Footer />
     </div>
