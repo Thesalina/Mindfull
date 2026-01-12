@@ -19,8 +19,7 @@ import { AuthProvider } from './Components/Login/AuthContext.jsx';
 import Articaldetail from './Components/SubComponent/Articaldetail.jsx';
 import ProtectedRoute from './Components/Login/ProtectRoute.jsx';
 import { ThemeProvider } from './Components/ThemeContext.jsx';
-
-
+import ResourceDetail from './Components/SubComponent/ResourceDetails.jsx';
 // Define router
 const router = createBrowserRouter([
   {
@@ -91,6 +90,14 @@ const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
+      {
+  path: '/resources/:id',
+  element: (
+    <ProtectedRoute>
+      <ResourceDetail />
+    </ProtectedRoute>
+  )
+}
     ],
   },
 ]);

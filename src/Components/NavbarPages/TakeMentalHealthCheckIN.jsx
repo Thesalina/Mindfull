@@ -1,116 +1,131 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-// import { db } from './firebase'; // Optional: if using Firebase
-// import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
+import { FiCheckCircle, FiEdit3, FiHeart } from 'react-icons/fi';
 
 const moods = [
-  {
-    label: 'Excellent',
-    color: 'from-green-300 to-green-500',
-    icon: '⭐',
-    message: 'Keep shining! Today is your day!',
-  },
-  {
-    label: 'Good',
-    color: 'from-sky-300 to-sky-500',
-    icon: '😊',
-    message: 'Glad to hear that! Keep the good vibes going.',
-  },
-  {
-    label: 'Okay',
-    color: 'from-yellow-300 to-yellow-500',
-    icon: '😐',
-    message: 'It’s okay to have neutral days. You’re doing fine.',
-  },
-  {
-    label: 'Down',
-    color: 'from-orange-300 to-orange-500',
-    icon: '😔',
-    message: 'Take it easy today. You’re not alone.',
-  },
-  {
-    label: 'Struggling',
-    color: 'from-rose-300 to-rose-500',
-    icon: '💔',
-    message: 'We’re here for you. Don’t hesitate to reach out for support.',
-  },
+  { label: 'Excellent', color: 'bg-emerald-400', shadow: 'shadow-emerald-500/40', icon: '🤩', message: 'Keep shining! Today is your day!' },
+  { label: 'Good', color: 'bg-sky-400', shadow: 'shadow-sky-500/40', icon: '😊', message: 'Glad to hear that! Keep the good vibes going.' },
+  { label: 'Okay', color: 'bg-amber-400', shadow: 'shadow-amber-500/40', icon: '😐', message: 'It’s okay to have neutral days. You’re doing fine.' },
+  { label: 'Down', color: 'bg-orange-400', shadow: 'shadow-orange-500/40', icon: '😔', message: 'Take it easy today. You’re not alone.' },
+  { label: 'Struggling', color: 'bg-rose-400', shadow: 'shadow-rose-500/40', icon: '💔', message: 'We’re here for you. Don’t hesitate to reach out for support.' },
 ];
 
 export default function MentalHealthCheckIn() {
   const [selectedMood, setSelectedMood] = useState(null);
   const [note, setNote] = useState('');
   const [submitted, setSubmitted] = useState(false);
-  
-const navigate = useNavigate();
-
+  const [darkMode] = useState(JSON.parse(localStorage.getItem("darkMode")) || false);
+  const navigate = useNavigate();
 
   const currentMood = moods.find((m) => m.label === selectedMood);
 
   const handleSubmit = async () => {
+    // Here you would typically save to Firebase/Backend
     setSubmitted(true);
-      setTimeout(() => {
-    navigate('/home');
-  }, 5000); // waits 2 seconds before redirecting
-  
+    setTimeout(() => {
+      navigate('/home');
+    }, 4000); 
   };
 
-  return (
-    <section className="min-h-screen bg-white text-emerald-600  dark:bg-slate-800  dark:text-white rounded-xl  p-6 flex flex-col items-center justify-center">
-      <div className="max-w-xl w-full text-center space-y-6">
-        <h1 className="text-3xl font-bold">🧠 Take a Mental Health Check-In</h1>
+  const bgStyle = darkMode 
+    ? "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)" 
+    : "linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)";
 
+  return (
+    <div className={`min-h-screen p-6 transition-colors duration-500 flex items-center justify-center ${darkMode ? 'text-slate-200' : 'text-slate-800'}`} style={{ background: bgStyle }}>
+      
+      {/* Background Blobs */}
+      <div className={`fixed top-1/4 -left-20 w-80 h-80 rounded-full filter blur-[100px] opacity-20 ${darkMode ? 'bg-emerald-600' : 'bg-emerald-300'}`}></div>
+
+      <div className="max-w-xl w-full relative z-10">
         {!submitted ? (
-          <>
-            <p className="text-lg">How are you feeling today?</p>
-            <div className="flex flex-col gap-4">
+          <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+            <header className="text-center">
+              <h1 className="text-4xl font-bold mb-3 tracking-tight">How are you, <span className="text-emerald-500">really?</span></h1>
+              <p className="opacity-60 text-lg">Checking in with yourself is a form of self-love.</p>
+            </header>
+
+            {/* Mood Grid */}
+            <div className="grid gap-3">
               {moods.map((mood) => (
                 <button
                   key={mood.label}
                   onClick={() => setSelectedMood(mood.label)}
-                  className={`flex items-center justify-between px-5 py-4 rounded-2xl bg-gradient-to-r ${mood.color}
-                    text-white shadow-md transition-all hover:scale-105 ${
-                      selectedMood === mood.label ? 'ring-2 ring-white/50' : ''
-                    }`}
+                  className={`group flex items-center justify-between px-6 py-5 rounded-3xl border transition-all duration-300 ${
+                    selectedMood === mood.label 
+                      ? `${mood.color} text-white shadow-xl ${mood.shadow} scale-[1.02] border-transparent` 
+                      : darkMode 
+                        ? 'bg-slate-800/40 border-slate-700 hover:bg-slate-800/60' 
+                        : 'bg-white/60 border-white/20 hover:bg-white shadow-sm'
+                  }`}
                 >
-                  <span className="flex items-center gap-3 text-lg">
-                    <span className="text-2xl">{mood.icon}</span>
+                  <span className="flex items-center gap-4 text-xl font-bold">
+                    <span className={`text-3xl transition-transform duration-500 ${selectedMood === mood.label ? 'scale-125' : 'group-hover:scale-110'}`}>
+                      {mood.icon}
+                    </span>
                     {mood.label}
                   </span>
-                  {selectedMood === mood.label && <span className="text-xl animate-pulse">✔</span>}
+                  {selectedMood === mood.label && <FiCheckCircle className="text-2xl animate-bounce" />}
                 </button>
               ))}
             </div>
 
-            {/* Optional Note Input */}
+            {/* Reflection Note */}
             {selectedMood && (
-              <textarea
-                value={note}
-                onChange={(e) => setNote(e.target.value)}
-                placeholder="Anything you'd like to share?"
-                rows={3}
-                className="w-full mt-6 p-4 rounded-xl bg-mint backdrop-blur-md  text-emerald-600 border border-white/20 placeholder-emarald-600 resize-none"
-              />
-            )}
+              <div className="space-y-4 animate-in fade-in zoom-in duration-500">
+                <div className="flex items-center gap-2 px-2 text-sm font-bold uppercase tracking-widest opacity-50">
+                  <FiEdit3 /> <span>Add a reflection (optional)</span>
+                </div>
+                <textarea
+                  value={note}
+                  onChange={(e) => setNote(e.target.value)}
+                  placeholder="What's contributing to your mood today?"
+                  rows={4}
+                  className={`w-full p-5 rounded-3xl border transition-all focus:ring-2 focus:ring-emerald-500 focus:outline-none resize-none shadow-inner ${
+                    darkMode 
+                    ? "bg-slate-900/50 border-slate-700 text-white placeholder-slate-500" 
+                    : "bg-white/80 border-slate-200 text-slate-800 placeholder-slate-400"
+                  }`}
+                />
 
-            {/* Submit Button */}
-            {selectedMood && (
-              <button
-                onClick={handleSubmit}
-                className="mt-4 bg-mint-light text-emerald-900 font-bold px-6 py-3 rounded-xl hover:scale-105 transition"
-              >
-                ✅ Submit Check-In
-              </button>
+                <button
+                  onClick={handleSubmit}
+                  className="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-5 rounded-3xl shadow-lg shadow-emerald-500/30 transition-all active:scale-95 flex items-center justify-center gap-2 text-lg"
+                >
+                  <FiHeart /> Complete Check-In
+                </button>
+              </div>
             )}
-          </>
+          </div>
         ) : (
-          <>
-            <p className="text-xl font-semibold text-emerald-300">
-              {currentMood?.message || "Thanks for checking in!"}
-            </p>
-            <p className="text-sm mt-2 text-white/70">Your check-in has been saved.</p>
-          </>
+          /* Success State */
+          <div className="text-center space-y-6 animate-in zoom-in fade-in duration-500">
+            <div className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-emerald-500 text-white text-5xl shadow-2xl shadow-emerald-500/50 animate-bounce">
+              {currentMood?.icon}
+            </div>
+            <div className="space-y-2">
+              <h2 className={`text-3xl font-bold ${darkMode ? 'text-emerald-400' : 'text-emerald-600'}`}>
+                {currentMood?.message}
+              </h2>
+              <p className="opacity-60">Your reflection has been saved in your journey.</p>
+            </div>
+            
+            <div className="pt-8">
+              <div className={`w-full h-1.5 rounded-full overflow-hidden ${darkMode ? 'bg-slate-800' : 'bg-slate-200'}`}>
+                <div className="h-full bg-emerald-500 animate-[progress_4s_linear]" style={{ width: '100%' }}></div>
+              </div>
+              <p className="text-xs mt-3 font-bold uppercase tracking-widest opacity-30">Redirecting to home...</p>
+            </div>
+          </div>
         )}
       </div>
-    </section>
+
+      <style jsx>{`
+        @keyframes progress {
+          from { width: 0%; }
+          to { width: 100%; }
+        }
+      `}</style>
+    </div>
   );
 }
