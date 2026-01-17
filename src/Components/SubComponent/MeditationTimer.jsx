@@ -1,87 +1,128 @@
-import { useEffect, useState } from 'react';
-import { FiVolumeX, FiVolume2 } from 'react-icons/fi'; // Install: react-icons
+import { useEffect, useState } from "react";
+import { FiVolume2, FiVolumeX, FiPlay, FiPause, FiArrowLeft, FiRotateCcw } from "react-icons/fi";
+import { motion, AnimatePresence } from "framer-motion";
+import useCalmAudio from "../SubComponent/useCalmAudio";
 
 export default function MeditationTimer({ minutes, onBack }) {
-  const [seconds, setSeconds] = useState(minutes * 60);
+  const totalSeconds = minutes * 60;
+  const [seconds, setSeconds] = useState(totalSeconds);
   const [running, setRunning] = useState(true);
   const [isMuted, setIsMuted] = useState(false);
-  const [audio] = useState(() => new Audio('/sounds/calmmusic.mp3'));
+
+  useCalmAudio(isMuted);
 
   useEffect(() => {
-    audio.loop = true;
-    audio.volume = 0.3;
-    audio.muted = isMuted;
-
-    const enableAudio = () => {
-      if (!isMuted) {
-        audio.play().catch((err) => console.warn('Audio play error:', err));
-      }
-    };
-
-    document.addEventListener('click', enableAudio, { once: true });
-
-    return () => {
-      audio.pause();
-      audio.currentTime = 0;
-    };
-  }, [isMuted]);
-
-  useEffect(() => {
-    if (!running) return;
-    const interval = setInterval(() => {
-      setSeconds((prev) => {
-        if (prev <= 1) {
-          clearInterval(interval);
-          setRunning(false);
-          audio.muted = true; // Auto-mute at end
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
+    if (!running || seconds <= 0) return;
+    const interval = setInterval(() => setSeconds((s) => s - 1), 1000);
     return () => clearInterval(interval);
-  }, [running]);
+  }, [running, seconds]);
 
-  const toggleMute = () => {
-    const newMute = !isMuted;
-    setIsMuted(newMute);
-    audio.muted = newMute;
-  };
+  // Calculate SVG Progress
+  const percentage = (seconds / totalSeconds) * 100;
+  const radius = 70;
+  const circumference = 2 * Math.PI * radius;
+  const strokeDashoffset = circumference - (percentage / 100) * circumference;
 
   const formatTime = () => {
-    const m = String(Math.floor(seconds / 60)).padStart(2, '0');
-    const s = String(seconds % 60).padStart(2, '0');
-    return `${m}:${s}`;
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    return `${m}:${s < 10 ? "0" : ""}${s}`;
   };
 
   return (
-    <div className="text-center mt-16">
-      <h2 className="text-2xl font-bold mb-4">Meditation Timer</h2>
-      <div className="text-5xl bg-green-100 p-6 rounded font-mono">{formatTime()}</div>
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-tr from-slate-900 via-teal-950 to-slate-900 text-white p-6">
+      
+      {/* Background Ambient Glow */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-emerald-500/10 blur-[120px] rounded-full" />
+        <div className="absolute -bottom-[10%] -right-[10%] w-[40%] h-[40%] bg-blue-500/10 blur-[120px] rounded-full" />
+      </div>
 
-      <div className="mt-6 flex flex-wrap justify-center gap-4">
+      {/* Header */}
+      <motion.button 
+        initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+        onClick={onBack}
+        className="absolute top-8 left-8 flex items-center gap-2 text-slate-400 hover:text-emerald-400 transition-colors"
+      >
+        <FiArrowLeft /> Back to Home
+      </motion.button>
+
+      {/* Main Timer Circle */}
+      <div className="relative flex items-center justify-center">
+        <svg className="w-72 h-72 transform -rotate-90">
+          {/* Background Circle */}
+          <circle
+            cx="144" cy="144" r={radius}
+            stroke="currentColor" strokeWidth="4"
+            fill="transparent" className="text-white/5"
+          />
+          {/* Progress Circle */}
+          <motion.circle
+            cx="144" cy="144" r={radius}
+            stroke="currentColor" strokeWidth="4"
+            fill="transparent" className="text-emerald-500"
+            strokeDasharray={circumference}
+            initial={{ strokeDashoffset: circumference }}
+            animate={{ strokeDashoffset }}
+            transition={{ duration: 1, ease: "linear" }}
+            strokeLinecap="round"
+          />
+        </svg>
+
+        {/* Time Text */}
+        <div className="absolute flex flex-col items-center">
+          <motion.span 
+            key={seconds}
+            initial={{ opacity: 0.5 }} animate={{ opacity: 1 }}
+            className="text-6xl font-light tracking-tight tabular-nums"
+          >
+            {formatTime()}
+          </motion.span>
+          <span className="text-xs uppercase tracking-[0.2em] text-emerald-400/60 mt-2">
+            Remaining
+          </span>
+        </div>
+      </div>
+
+      {/* Controls Container */}
+      <motion.div 
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        className="mt-16 flex items-center gap-8 bg-white/5 backdrop-blur-xl border border-white/10 px-8 py-4 rounded-full shadow-2xl"
+      >
+        <button
+          onClick={() => setIsMuted(!isMuted)}
+          className={`p-3 rounded-full transition-all ${isMuted ? 'text-rose-400' : 'text-slate-400 hover:text-white'}`}
+        >
+          {isMuted ? <FiVolumeX size={24} /> : <FiVolume2 size={24} />}
+        </button>
+
         <button
           onClick={() => setRunning(!running)}
-          className="bg-emerald-600 text-white px-4 py-2 rounded hover:bg-emerald-700 transition"
+          className="w-16 h-16 flex items-center justify-center bg-emerald-500 hover:bg-emerald-400 text-slate-900 rounded-full transition-transform active:scale-95 shadow-lg shadow-emerald-500/20"
         >
-          {running ? 'Pause' : 'Resume'}
+          {running ? <FiPause size={28} /> : <FiPlay size={28} className="ml-1" />}
         </button>
 
         <button
-          onClick={onBack}
-          className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700 transition"
+          onClick={() => setSeconds(totalSeconds)}
+          className="p-3 text-slate-400 hover:text-white transition-colors"
         >
-          Back
+          <FiRotateCcw size={24} />
         </button>
+      </motion.div>
 
-        <button
-          onClick={toggleMute}
-          title={isMuted ? 'Unmute Sound' : 'Mute Sound'}
-          className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 transition flex items-center gap-2"
-        >
-          {isMuted ? <FiVolumeX /> : <FiVolume2 />}
-        </button>
-      </div>
+      {/* Encouragement Text */}
+      <AnimatePresence mode="wait">
+        {!running && seconds > 0 && (
+          <motion.p
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            className="mt-8 text-slate-400 italic"
+          >
+            Take a deep breath and continue...
+          </motion.p>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

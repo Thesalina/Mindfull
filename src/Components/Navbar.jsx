@@ -7,8 +7,11 @@ export default function Navbar() {
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
   const location = useLocation();
+
+  // Hide theme toggle on auth pages
   const hideThemeToggle = ['/login', '/signin', '/forgotpassword'].includes(location.pathname);
 
+  // Handle logout
   const handleLogout = async () => {
     try {
       await logout();
@@ -18,12 +21,13 @@ export default function Navbar() {
     }
   };
 
+  // Prevent rendering while auth state is loading
   if (loading) return null;
 
   return (
     <nav className="bg-mint-light shadow-sm sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-6 py-4 flex flex-wrap justify-between items-center gap-4">
-        
+
         {/* Logo */}
         <Link to="/home" className="flex items-center gap-3">
           <img
@@ -53,7 +57,18 @@ export default function Navbar() {
           </div>
         )}
 
-       
+        {/* Theme Toggle & Auth Buttons */}
+        <div className="flex items-center gap-4">
+          {/* Theme toggle */}
+          {!hideThemeToggle && (
+            <button
+              onClick={toggleTheme}
+              className="text-xl p-2 hover:scale-110 transition"
+              aria-label="Toggle Theme"
+            >
+              {theme === 'light' ? '🌙' : '☀️'}
+            </button>
+          )}
 
           {/* Auth Buttons */}
           {currentUser ? (
@@ -81,7 +96,8 @@ export default function Navbar() {
             </>
           )}
         </div>
-      
+
+      </div>
     </nav>
   );
 }

@@ -8,7 +8,7 @@ import Navbar from './Components/Navbar.jsx';
 import Login from './Components/Login/Login.jsx';
 import Footer from './Components/Footer.jsx';
 import Layout from './Components/Layout.jsx';
-import homepage from './Components/homepage.jsx';
+import home from './Components/homepage.jsx';
 import Signin from './Components/Login/Signin.jsx';
 import ForgotPassword from './Components/Login/ForgotPassword.jsx';
 import Profile from './Components/NavbarPages/Profile.jsx';

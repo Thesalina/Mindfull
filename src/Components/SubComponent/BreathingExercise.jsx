@@ -1,69 +1,91 @@
-import { useEffect, useState } from 'react';
-import { FiVolumeX, FiVolume2 } from 'react-icons/fi'; // Speaker icons
+import { useEffect, useState } from "react";
+import { FiVolume2, FiVolumeX, FiArrowLeft } from "react-icons/fi";
+import { motion, AnimatePresence } from "framer-motion";
+import useCalmAudio from "../SubComponent/useCalmAudio";
 
 export default function BreathingExercise({ onBack }) {
-  const [phase, setPhase] = useState('Inhale');
+  const phases = [
+    { text: "Inhale", scale: 1.6, glow: "rgba(52,211,153,0.6)" },
+    { text: "Hold", scale: 1.6, glow: "rgba(20,184,166,0.6)" },
+    { text: "Exhale", scale: 1.1, glow: "rgba(96,165,250,0.6)" },
+  ];
+
+  const [phaseIndex, setPhaseIndex] = useState(0);
   const [isMuted, setIsMuted] = useState(false);
-  const [audio] = useState(() => new Audio('/sounds/calmmusic.mp3'));
+
+  useCalmAudio(isMuted);
 
   useEffect(() => {
-    audio.loop = true;
-    audio.volume = 0.5;
-    audio.muted = isMuted;
+    const interval = setInterval(() => {
+      setPhaseIndex((prev) => (prev + 1) % phases.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
 
-    const enableAudio = () => {
-      if (!isMuted) {
-        audio.play().catch((err) => console.warn('Audio play error:', err));
-      }
-    };
-
-    document.addEventListener('click', enableAudio, { once: true });
-
-    // Breathing cycle loop
-    const phases = ['Inhale', 'Hold', 'Exhale'];
-    const durations = [4000, 4000, 4000];
-    let i = 0;
-    const loop = () => {
-      setPhase(phases[i]);
-      setTimeout(() => {
-        i = (i + 1) % phases.length;
-        loop();
-      }, durations[i]);
-    };
-    loop();
-
-    return () => {
-      audio.pause();
-      audio.currentTime = 0;
-    };
-  }, [isMuted]);
-
-  const toggleMute = () => {
-    const newMuted = !isMuted;
-    setIsMuted(newMuted);
-    audio.muted = newMuted;
-  };
+  const current = phases[phaseIndex];
 
   return (
-    <div className="text-center mt-10">
-      <h2 className="text-2xl font-bold mb-6 text-emerald-700">{phase}</h2>
-      <div className="w-40 h-40 rounded-full bg-green-300 mx-auto animate-breathe shadow-lg" />
+    <div className="relative min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-slate-950 via-emerald-950 to-slate-950 text-white overflow-hidden">
 
-      <div className="mt-6 flex flex-wrap justify-center gap-4">
+      {/* Back Button */}
+      <button
+        onClick={onBack}
+        className="absolute top-8 left-8 flex items-center gap-2 text-white/60 hover:text-white transition"
+      >
+        <FiArrowLeft size={20} />
+        <span className="text-sm tracking-wide">Exit</span>
+      </button>
+
+      {/* Breathing Area */}
+      <div className="relative flex items-center justify-center w-[22rem] h-[22rem]">
+
+        {/* Ambient Glow */}
+        <motion.div
+          animate={{ scale: current.scale }}
+          transition={{ duration: 4, ease: "easeInOut" }}
+          className="absolute w-72 h-72 rounded-full blur-[90px] opacity-40"
+          style={{ background: current.glow }}
+        />
+
+        {/* Main Circle */}
+        <motion.div
+          animate={{ scale: current.scale }}
+          transition={{ duration: 4, ease: "easeInOut" }}
+          className="relative w-48 h-48 rounded-full bg-gradient-to-br from-white/20 to-white/5 border border-white/20 backdrop-blur-xl shadow-[0_0_80px_rgba(0,0,0,0.6)]"
+        />
+
+        {/* Phase Text */}
+        <AnimatePresence mode="wait">
+          <motion.h2
+            key={current.text}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            className="absolute text-4xl font-light tracking-[0.3em] uppercase text-white/90"
+          >
+            {current.text}
+          </motion.h2>
+        </AnimatePresence>
+      </div>
+
+      {/* Bottom Controls */}
+      <div className="mt-20 flex items-center gap-6 px-8 py-4 rounded-full bg-white/5 backdrop-blur-xl border border-white/10 shadow-lg">
         <button
-          className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700 transition"
-          onClick={onBack}
+          onClick={() => setIsMuted(!isMuted)}
+          className="p-3 rounded-full hover:bg-white/10 transition"
         >
-          Back
+          {isMuted ? (
+            <FiVolumeX size={22} className="text-rose-400" />
+          ) : (
+            <FiVolume2 size={22} className="text-emerald-400" />
+          )}
         </button>
 
-        <button
-          className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 transition flex items-center gap-2"
-          onClick={toggleMute}
-          title={isMuted ? 'Unmute Sound' : 'Mute Sound'}
-        >
-          {isMuted ? <FiVolumeX /> : <FiVolume2 />}
-        </button>
+        <div className="h-5 w-px bg-white/20" />
+
+        <span className="text-xs tracking-widest uppercase text-white/60">
+          Deep Breathing
+        </span>
       </div>
     </div>
   );
