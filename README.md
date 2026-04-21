@@ -127,11 +127,6 @@ The app will be available at **http://localhost:3000**
 
 ---
 
-## 📸 Screenshots
-
-> _Add screenshots of the Mood Tracker, Journal page, and Self-Care Toolkit here._
-
----
 
 ## 🤝 Contributing
 
